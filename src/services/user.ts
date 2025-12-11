@@ -13,7 +13,7 @@ export const createUser = async (payload: UserCreatePayload) => {
     return user;
   } catch (error) {
     console.error(error);
-    return {} as User;
+    return null;
   }
 };
 
