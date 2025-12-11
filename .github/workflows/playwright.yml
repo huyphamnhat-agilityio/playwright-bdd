@@ -37,7 +37,7 @@ jobs:
       # ▶ Step: Run tests normally after auth state exists
       # ----------------------------------------------------------
       - name: Run Playwright tests and generate HTML report
-        run: pnpm exec playwright test --reporter=html
+        run: pnpm bddgen && pnpm exec playwright test --reporter=html
 
       - name: Verify report folder exists
         run: ls -al playwright-report
