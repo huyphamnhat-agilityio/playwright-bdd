@@ -1,28 +1,13 @@
 import { expect } from "@playwright/test";
 
 import {
-  API_ENDPOINTS,
   USER_CREATION_TEST_DATA,
   SUCCESS_MESSAGES,
   ERROR_MESSAGES,
 } from "@/constants";
-import { createAuthenticatedRequest } from "@/services/apiContext";
-import { ApiErrorResponse, User } from "@/types";
-import { Given, After, Then, When } from "@/fixtures/users.fixture";
-
-let createdUser: User | null = null;
-
-/**
- * Cleanup after each scenario (equivalent to test.afterEach)
- */
-After(async () => {
-  if (createdUser?.id) {
-    const api = await createAuthenticatedRequest();
-    const res = await api.delete(`${API_ENDPOINTS.RECORDS}/${createdUser.id}`);
-    expect(res.ok()).toBeTruthy();
-    createdUser = null;
-  }
-});
+import { ApiErrorResponse } from "@/types";
+import { After, Given, Then, When } from "@/fixtures/users.fixture";
+import { deleteUser } from "@/services";
 
 /**
  * Navigation
@@ -84,17 +69,18 @@ When(
 
 When(
   'the user clicks the "Create" button to submit the form',
-  async ({ usersPage, browserName }) => {
+  async ({ usersPage, browserName, ctx }) => {
     const response = await usersPage.waitForApiResponse("POST", () =>
       usersPage.createButton.click(),
     );
 
-    const json = await response.json();
-    createdUser = json;
+    ctx.createdUser = await response.json();
 
     expect(response.status()).toBe(200);
-    expect(json.email).toBe(`${USER_CREATION_TEST_DATA.email}${browserName}`);
-    expect(json.id).toBeDefined();
+    expect(ctx.createdUser?.email).toBe(
+      `${USER_CREATION_TEST_DATA.email}${browserName}`,
+    );
+    expect(ctx.createdUser?.id).toBeDefined();
   },
 );
 
@@ -104,24 +90,29 @@ When('the user clicks the "Create" button', async ({ usersPage }) => {
 
 Then(
   "the user should see the created user in the list",
-  async ({ usersPage, browserName }) => {
+  async ({ usersPage, ctx: { createdUser } }) => {
     await usersPage.verifySuccessMessage(SUCCESS_MESSAGES.CREATE_SUCCESS);
 
-    const email = `${USER_CREATION_TEST_DATA.email}${browserName}`;
-    const userInList = await usersPage.getUserByEmail(email);
+    const userInList = await usersPage.getUserByEmail(createdUser!.email);
     await expect(userInList).toBeVisible();
-    await expect(userInList).toContainText(email);
+    await expect(userInList).toContainText(createdUser!.email);
   },
 );
 
-Then("the API should return success for user creation", async () => {
-  expect(createdUser).not.toBeNull();
-});
+Then(
+  "the API should return success for user creation",
+  async ({ ctx: { createdUser } }) => {
+    expect(createdUser).not.toBeNull();
+  },
+);
 
-Then("the UI result should match the API response", async ({ usersPage }) => {
-  const userInList = await usersPage.getUserByEmail(createdUser!.email);
-  await expect(userInList).toContainText(createdUser!.email);
-});
+Then(
+  "the UI result should match the API response",
+  async ({ usersPage, ctx }) => {
+    const userInList = await usersPage.getUserByEmail(ctx.createdUser!.email);
+    await expect(userInList).toContainText(ctx.createdUser!.email);
+  },
+);
 
 Then(
   "the user should still see the Create User form",
@@ -157,3 +148,16 @@ Then("the user should see an error toast message", async ({ page }) => {
   const errorMessage = page.getByText(ERROR_MESSAGES.CREATE_FAIL);
   await expect(errorMessage).toBeVisible({ timeout: 5000 });
 });
+
+/**
+ * Cleanup after create user scenarios
+ */
+After(
+  { tags: "@TC_USERS_001 or @TC_USERS_002 or @TC_USERS_003" },
+  async ({ ctx }) => {
+    if (ctx.createdUser?.id) {
+      await deleteUser(ctx.createdUser.id);
+      ctx.createdUser = null;
+    }
+  },
+);
