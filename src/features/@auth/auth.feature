@@ -1,11 +1,11 @@
-@auth
+@slow
 Feature: Authentication
 
     @TC_AUTH_001 @login
     Scenario: User can login with right username and password
         Given the user is on the login page
-        When the user fills the email field with "valid"
-            And the user fills the password field with "valid"
+        When the user fills the email field with "test@example.com"
+            And the user fills the password field with "123456"
             And the user clicks the login button
         Then the user should navigate to the dashboard page
 
@@ -26,8 +26,8 @@ Feature: Authentication
     @TC_AUTH_003 @login
     Scenario: User cannot login with wrong username and password
         Given the user is on the login page
-        When the user fills the email field with "wrong"
-            And the user fills the password field with "wrong"
+        When the user fills the email field with "wrongemail@example.com"
+            And the user fills the password field with "wrongpassword"
             And the user clicks the login button
         Then the user should see invalid credentials error
 

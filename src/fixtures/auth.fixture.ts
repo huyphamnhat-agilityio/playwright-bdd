@@ -7,7 +7,7 @@ type AuthFixtures = {
   dashboardPage: DashboardPage;
 };
 
-export const test = base.extend<AuthFixtures>({
+export const testAuth = base.extend<AuthFixtures>({
   loginPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     await loginPage.navigateTo();
@@ -20,4 +20,4 @@ export const test = base.extend<AuthFixtures>({
   },
 });
 
-export const { Given, When, Then } = createBdd(test);
+export const { Given, When, Then } = createBdd(testAuth);
