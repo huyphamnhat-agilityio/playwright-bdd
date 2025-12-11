@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "pnpm bddgen && pnpm playwright test",
+    "test:headed": "pnpm bddgen && pnpm playwright test --headed",
+    "report": "playwright show-report",
     "prepare": "husky"
   },
   "keywords": [],

@@ -23,7 +23,11 @@
     "src/fixtures/**/*",
     "src/utils/**/*",
     "src/constants/**/*",
-    "playwright.config.ts"
+    "src/configs/**/*",
+    "src/types/**/*",
+    "src/services/**/*",
+    "playwright.config.ts",
+    "src/utils/Table/.ts"
   ],
   "exclude": ["node_modules", "test-results", "playwright-report"]
 }

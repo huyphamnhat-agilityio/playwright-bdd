@@ -1,3 +1,4 @@
+import { AUTH_FILE, BROWSER_CONFIGS, TEST_PATTERNS } from "@/configs/browsers";
 import { defineBddConfig } from "playwright-bdd";
 import { defineConfig, devices } from "@playwright/test";
 import dotenv from "dotenv";
@@ -5,7 +6,7 @@ import path from "path";
 
 const testDir = defineBddConfig({
   features: "./src/features/**/*.feature",
-  steps: ["./src/steps/**/*.ts", "./src/fixtures/**/*.ts"],
+  steps: ["./src/fixtures/**/*.ts", "./src/steps/**/*.steps.ts"],
 });
 
 /**
@@ -38,23 +39,30 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
-
   /* Configure projects for major browsers */
   projects: [
+    // Setup project
     {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      name: "setup",
+      testDir: "src/configs",
+      testMatch: TEST_PATTERNS.SETUP,
     },
 
-    {
-      name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
-    },
+    ...BROWSER_CONFIGS.map((browser) => ({
+      name: browser.name,
+      use: {
+        ...browser.device,
+        storageState: AUTH_FILE,
+      },
+      dependencies: ["setup"],
+      testIgnore: TEST_PATTERNS.AUTH,
+    })),
 
-    {
-      name: "webkit",
-      use: { ...devices["Desktop Safari"] },
-    },
+    ...BROWSER_CONFIGS.map((browser) => ({
+      name: `${browser.name}-unauthenticated`,
+      use: { ...browser.device },
+      testMatch: TEST_PATTERNS.AUTH,
+    })),
 
     /* Test against mobile viewports. */
     // {
