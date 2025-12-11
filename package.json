@@ -6,6 +6,7 @@
   "scripts": {
     "test": "pnpm bddgen && pnpm playwright test",
     "test:headed": "pnpm bddgen && pnpm playwright test --headed",
+    "auth:setup": "pnpm exec playwright test src/configs/auth.setup.ts --config=playwright.config.ts",
     "report": "playwright show-report",
     "prepare": "husky"
   },
