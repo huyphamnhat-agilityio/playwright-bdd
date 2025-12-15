@@ -14,8 +14,13 @@ Given("the user is on the users search page", async ({ searchUsersPage }) => {
  */
 When(
   "the user enters {string} into the search input",
-  async ({ searchUsersPage, browserName }, keyword) => {
-    await searchUsersPage.searchInput.fill(`${keyword}${browserName}`);
+  async (
+    { searchUsersPage, browserName, $workerInfo: { workerIndex } },
+    keyword,
+  ) => {
+    await searchUsersPage.searchInput.fill(
+      `${keyword}${workerIndex}${browserName}`,
+    );
   },
 );
 
@@ -37,7 +42,11 @@ When("the user clicks the search button", async ({ searchUsersPage, ctx }) => {
  */
 Then(
   "the user should see search results matching {string} in the {string} column",
-  async ({ searchUsersPage, browserName, ctx }, keyword, column) => {
+  async (
+    { searchUsersPage, browserName, ctx, $workerInfo: { workerIndex } },
+    keyword,
+    column,
+  ) => {
     const apiResult = ctx.searchApiResponse as ApiResponse<{ id: string }>;
 
     // Validate API returned at least one item
@@ -51,6 +60,6 @@ Then(
     // Validate column values
     const values = await searchUsersPage.table.getColumnValues(column);
 
-    expect(values).toContain(`${keyword}${browserName}`);
+    expect(values).toContain(`${keyword}${workerIndex}${browserName}`);
   },
 );
