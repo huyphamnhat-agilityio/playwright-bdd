@@ -111,7 +111,10 @@ export const testUser = testAuth.extend<UsersFixtures>({
     }
   },
 
-  searchUsersPage: async ({ page, browserName }, use) => {
+  searchUsersPage: async (
+    { page, browserName, $workerInfo: { workerIndex } },
+    use,
+  ) => {
     const usersPage = new UsersPage(page);
 
     const userList: { email: string; id: string }[] = [];
@@ -120,8 +123,8 @@ export const testUser = testAuth.extend<UsersFixtures>({
     for (const payload of USER_SEARCH_TEST_DATA) {
       const user = await createUser({
         ...payload,
-        email: `${payload.email}${browserName}`,
-        username: `${payload.username}${browserName}`,
+        email: `${payload.email}${workerIndex}${browserName}`,
+        username: `${payload.username}${workerIndex}${browserName}`,
         passwordConfirm: payload.password,
       });
 

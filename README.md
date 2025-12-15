@@ -8,8 +8,6 @@ A comprehensive end-to-end testing framework using Playwright with Behavior-Driv
 
 ## 🚀 Features
 
-git a
-
 - **BDD Testing**: Gherkin feature files with step definitions
 - **Multi-Browser Support**: Chrome, Firefox, Safari, and Edge
 - **Authentication Testing**: Login/logout flows with session management

@@ -31,6 +31,7 @@ Then(
   "the user should see users sorted in descending order by {string}",
   async ({ sortUsersPage }, locator) => {
     const values = await sortUsersPage.table.getColumnValues(locator);
+
     expect(isDescending(values)).toBeTruthy();
   },
 );
