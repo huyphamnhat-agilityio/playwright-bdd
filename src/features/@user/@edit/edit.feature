@@ -44,3 +44,24 @@ Feature: User Edition
         | empty email            |                           | 12345678    | 12345678           |
         | empty password         | testuseredit2@example.com |             | 12345678           |
         | empty confirm password | testuseredit3@example.com | 12345678    |                    |
+
+    @TC_USERS_006
+    Scenario Outline: The user cannot submit edit user form with wrong value
+    Background:
+        Given a test user exists for editing wrong cases
+            And the user is on the users page
+        When the user clicks the created user for editing
+        Then the edit form should be displayed
+        When the user updates the email to "<newEmail>"
+            And the user enables password editing
+            And the user updates the password to "<newPassword>"
+            And the user updates the password confirm to "<newPasswordConfirm>"
+            And the user clicks the "Save changes" button and receives an error response
+        Then the user should see an update failure message
+            And the user should see the input error "<expectedError>"
+            And the user should stay on the edit form
+
+    Examples:
+        | originalEmail             | newEmail                  | newPassword | newPasswordConfirm | expectedError                    |
+        | testuseredit4@example.com | testuseredit4@example.com | 123456      | 123456             | Must be at least 8 character(s). |
+        | testuseredit5@example.com | testuseredit5@example.com | 123456789   | 12345678           | Values don't match.              |

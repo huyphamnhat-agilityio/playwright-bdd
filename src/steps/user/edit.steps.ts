@@ -1,7 +1,7 @@
-import { SUCCESS_MESSAGES } from "@/constants";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/constants";
 import { Given, When, Then, After } from "@/fixtures/users.fixture";
 import { createUser, deleteUser } from "@/services";
-import { User } from "@/types";
+import { ApiErrorResponse, User } from "@/types";
 import { expect } from "@playwright/test";
 
 /**
@@ -25,6 +25,20 @@ Given(
     const timestamp = Date.now();
     const payload = {
       email: `testuserinvalid-${timestamp}@example.com${browserName}`,
+      password: "123456789",
+      passwordConfirm: "123456789",
+    };
+    ctx.createdUser = await createUser(payload);
+    expect(ctx.createdUser?.id).toBeDefined();
+  },
+);
+
+Given(
+  "a test user exists for editing wrong cases",
+  async ({ browserName, ctx }) => {
+    const timestamp = Date.now();
+    const payload = {
+      email: `testuserwrong-${timestamp}@example.com${browserName}`,
       password: "123456789",
       passwordConfirm: "123456789",
     };
@@ -122,6 +136,21 @@ When(
 );
 
 When(
+  'the user clicks the "Save changes" button and receives an error response',
+  async ({ usersPage }) => {
+    const response = await usersPage.waitForApiResponse(
+      "PATCH",
+      async () => await usersPage.saveChangesButton.click(),
+    );
+
+    const apiError: ApiErrorResponse = await response.json();
+
+    expect(response.status()).toBe(400);
+    expect(apiError.message).toBeDefined();
+  },
+);
+
+When(
   'the user clicks the "Save changes" button with invalid data',
   async ({ usersPage }) => {
     await usersPage.saveChangesButton.click();
@@ -142,6 +171,11 @@ Then(
   },
 );
 
+Then("the user should see an update failure message", async ({ page }) => {
+  const toast = page.getByText(ERROR_MESSAGES.UPDATE_FAIL);
+  await expect(toast).toBeVisible();
+});
+
 /**
  * Validate API + UI consistency
  */
@@ -157,6 +191,19 @@ Then("the form should not be submitted", async ({ usersPage }) => {
   await expect(usersPage.saveChangesButton).toBeVisible();
   await usersPage.cancelButton.click();
 });
+
+Then("the user should stay on the edit form", async ({ usersPage }) => {
+  await expect(usersPage.saveChangesButton).toBeVisible();
+});
+
+Then(
+  "the user should see the input error {string}",
+  async ({ page }, expectedError) => {
+    const inputError = page.getByText(expectedError);
+    await expect(inputError).toBeVisible();
+    await expect(inputError).toContainText(expectedError);
+  },
+);
 
 /**
  * Cleanup after edit user scenarios
