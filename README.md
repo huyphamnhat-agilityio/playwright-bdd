@@ -1,93 +1,260 @@
-# playwright-bdd-training
+# Playwright BDD Training
 
+A comprehensive end-to-end testing framework using Playwright with Behavior-Driven Development (BDD) approach. This project demonstrates modern testing practices with Gherkin feature files, TypeScript, and automated browser testing.
 
+## Plan
 
-## Getting started
+- Google Docs: [Playwright-bdd]("https://docs.google.com/document/d/1SYEEO0x9Pdkzz30Ou-neryyJIE4y-yNaHneudV5qqBI/edit?usp=sharing")
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## 🚀 Features
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- **BDD Testing**: Gherkin feature files with step definitions
+- **Multi-Browser Support**: Chrome, Firefox, Safari, and Edge
+- **Authentication Testing**: Login/logout flows with session management
+- **User Management**: Complete CRUD operations testing
+- **API Integration**: Backend API testing alongside UI tests
+- **Parallel Execution**: Fast test execution with parallel workers
+- **CI/CD Ready**: GitLab CI integration with proper reporting
+- **Code Quality**: ESLint, Prettier, and Husky pre-commit hooks
 
-## Add your files
+## 📋 Test Coverage
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+### Authentication (`@auth`)
+
+- User login with valid credentials
+- Login validation and error handling
+- Session management and logout
+
+### User Management (`@user`)
+
+- **Create**: User creation with validation
+- **Edit**: User profile updates and form validation
+- **Delete**: User removal functionality
+- **Search**: User search and filtering
+- **Sort**: User list sorting capabilities
+
+## 🛠️ Tech Stack
+
+- **Testing Framework**: [Playwright](https://playwright.dev/)
+- **BDD Framework**: [playwright-bdd](https://vitalets.github.io/playwright-bdd/)
+- **Language**: TypeScript
+- **Package Manager**: pnpm
+- **Code Quality**: ESLint, Prettier, Husky
+- **CI/CD**: GitLab CI
+- **Environment**: Node.js
+
+## 📦 Installation
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- pnpm (recommended) or npm
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://gitlab.asoft-python.com/huy.phamnhat/playwright-bdd-training.git
+cd playwright-bdd-training
+
+# Install dependencies
+pnpm install
+
+# Install Playwright browsers
+pnpm exec playwright install
+
+# Copy environment file
+cp .env.example .env
+```
+
+### Environment Configuration
+
+Update `.env` file with your application settings:
+
+```env
+BASE_URL=http://localhost:3000
+# Add other environment variables as needed
+```
+
+## 🚀 Usage
+
+### Running Tests
+
+```bash
+# Run all tests
+pnpm test
+
+# Run tests in headed mode (visible browser)
+pnpm test:headed
+
+# Run specific feature
+pnpm playwright test --grep "@TC_USERS_001"
+
+# Run tests for specific browser
+pnpm playwright test --project=chromium
+
+# Run authentication setup only
+pnpm auth:setup
+```
+
+### Test Reports
+
+```bash
+# View HTML report
+pnpm report
+
+# Generate and open report
+pnpm playwright show-report
+```
+
+### Development Commands
+
+```bash
+# Generate BDD test files
+pnpm bddgen
+
+# Run linting
+pnpm lint
+
+# Format code
+pnpm format
+```
+
+## 📁 Project Structure
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.asoft-python.com/huy.phamnhat/playwright-bdd-training.git
-git branch -M main
-git push -uf origin main
+src/
+├── configs/           # Test configuration files
+│   ├── auth.setup.ts  # Authentication setup
+│   └── browsers.ts    # Browser configurations
+├── constants/         # Test data and constants
+│   ├── auth-credentials.ts
+│   ├── endpoints.ts
+│   └── user-test-data.ts
+├── features/          # Gherkin feature files
+│   ├── @auth/         # Authentication features
+│   └── @user/         # User management features
+├── fixtures/          # Test fixtures and context
+│   ├── auth.fixture.ts
+│   └── users.fixture.ts
+├── pages/             # Page Object Model classes
+│   ├── LoginPage.ts
+│   ├── UsersPage.ts
+│   └── DashboardPage.ts
+├── services/          # API service layer
+│   ├── apiContext.ts
+│   └── user.ts
+├── steps/             # Step definitions
+│   ├── auth/
+│   └── user/
+├── types/             # TypeScript type definitions
+└── utils/             # Utility functions
 ```
 
-## Integrate with your tools
+## 🧪 Writing Tests
 
-- [ ] [Set up project integrations](https://gitlab.asoft-python.com/huy.phamnhat/playwright-bdd-training/-/settings/integrations)
+### Feature Files
 
-## Collaborate with your team
+Create Gherkin feature files in `src/features/`:
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+```gherkin
+@slow
+Feature: User Creation
 
-## Test and Deploy
+  @TC_USERS_001
+  Scenario: User can create a user with valid value
+    Given the user is on the Users page
+    When the user clicks the "New Record" button
+      And the user fills the email field with valid data
+      And the user fills the password field with valid data
+      And the user fills the password confirm field with valid data
+      And the user clicks the "Create" button to submit the form
+    Then the API should return success for user creation
+      And the user should see the created user in the list
+```
 
-Use the built-in continuous integration in GitLab.
+### Step Definitions
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Implement step definitions in `src/steps/`:
 
-***
+```typescript
+import { Given, When, Then } from "@/fixtures/users.fixture";
 
-# Editing this README
+Given("the user is on the Users page", async ({ usersPage }) => {
+  await usersPage.navigateTo();
+});
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+When('the user clicks the "New Record" button', async ({ usersPage }) => {
+  await usersPage.newRecordButton.click();
+});
+```
 
-## Suggestions for a good README
+### Page Objects
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Create page objects in `src/pages/`:
 
-## Name
-Choose a self-explaining name for your project.
+```typescript
+export class UsersPage extends BasePage {
+  readonly newRecordButton = this.page.locator('[data-testid="new-record"]');
+  readonly emailField = this.page.locator('[name="email"]');
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+  async navigateTo() {
+    await this.page.goto("/users");
+  }
+}
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+## 🔧 Configuration
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+### Playwright Configuration
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+Main configuration in `playwright.config.ts`:
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+- Multi-browser setup (Chrome, Firefox, Safari, Edge)
+- Parallel execution settings
+- Authentication state management
+- Test patterns and matching
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Browser Configuration
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Browser settings in `src/configs/browsers.ts`:
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+- Device configurations
+- Viewport settings
+- Browser-specific options
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+## 🎯 Best Practices
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+### Test Organization
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+- Use descriptive test IDs (`@TC_USERS_001`)
+- Group related scenarios in feature files
+- Implement proper cleanup in After hooks
+- Use tagged hooks to prevent cross-contamination
 
-## License
-For open source projects, say how it is licensed.
+### Code Quality
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- Follow TypeScript best practices
+- Use Page Object Model pattern
+- Implement proper error handling
+- Write maintainable step definitions
+
+### Data Management
+
+- Use unique test data (timestamps)
+- Implement proper test isolation
+- Clean up test data after scenarios
+- Use environment-specific configurations
+
+## 🚦 CI/CD Integration
+
+The project includes GitLab CI configuration with:
+
+- Automated test execution
+- HTML report generation
+- Artifact collection
+- Multi-stage pipeline support
+
+## Author
+
+- huy.phamnhat@asnet.com.vn
