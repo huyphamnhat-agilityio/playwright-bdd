@@ -208,9 +208,12 @@ Then(
 /**
  * Cleanup after edit user scenarios
  */
-After({ tags: "@TC_USERS_004 or @TC_USERS_005" }, async ({ ctx }) => {
-  if (ctx.createdUser?.id) {
-    await deleteUser(ctx.createdUser.id);
-    ctx.createdUser = null;
-  }
-});
+After(
+  { tags: "@TC_USERS_004 or @TC_USERS_005 or @TC_USERS_006" },
+  async ({ ctx }) => {
+    if (ctx.createdUser?.id) {
+      await deleteUser(ctx.createdUser.id);
+      ctx.createdUser = null;
+    }
+  },
+);
