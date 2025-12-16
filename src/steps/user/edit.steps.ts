@@ -96,22 +96,10 @@ When('the user enables password editing', async ({ usersPage }) => {
  * Update password
  */
 When(
-  'the user updates the password to {string}',
-  async ({ usersPage }, newPassword) => {
-    await usersPage.passwordField.click();
+  'the user updates the password to {string} and the password confirm to {string}',
+  async ({ usersPage }, newPassword, newPasswordConfirm) => {
     await usersPage.passwordField.fill(newPassword);
-    await expect(usersPage.passwordField).toHaveValue(newPassword);
-  },
-);
-
-When(
-  'the user updates the password confirm to {string}',
-  async ({ usersPage }, newPasswordConfirm) => {
-    await usersPage.passwordConfirmField.click();
     await usersPage.passwordConfirmField.fill(newPasswordConfirm);
-    await expect(usersPage.passwordConfirmField).toHaveValue(
-      newPasswordConfirm,
-    );
   },
 );
 

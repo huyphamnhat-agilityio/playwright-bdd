@@ -16,16 +16,10 @@ Given('the user is logged in', async ({ loginPage }) => {
 });
 
 When(
-  'the user fills the email field with {string}',
-  async ({ loginPage }, value: string) => {
-    await loginPage.emailField.fill(value ?? '');
-  },
-);
-
-When(
-  'the user fills the password field with {string}',
-  async ({ loginPage }, value) => {
-    await loginPage.passwordField.fill(value ?? '');
+  'the user fills the email field with {string} and the password field with {string}',
+  async ({ loginPage }, email: string, password) => {
+    await loginPage.emailField.fill(email ?? '');
+    await loginPage.passwordField.fill(password ?? '');
   },
 );
 
