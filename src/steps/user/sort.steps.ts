@@ -21,6 +21,9 @@ When(
     );
 
     expect(response.status()).toBe(200);
+    await sortUsersPage.page
+      .locator('.sort-desc')
+      .waitFor({ state: 'visible' });
   },
 );
 
@@ -30,6 +33,8 @@ When(
 Then(
   'the user should see users sorted in descending order by {string}',
   async ({ sortUsersPage }, locator) => {
+    await sortUsersPage.table.waitForTableLoading();
+
     const values = await sortUsersPage.table.getColumnValues(locator);
 
     expect(isDescending(values)).toBeTruthy();
@@ -48,6 +53,7 @@ When(
     );
 
     expect(response.status()).toBe(200);
+    await sortUsersPage.page.locator('.sort-asc').waitFor({ state: 'visible' });
   },
 );
 
@@ -57,7 +63,10 @@ When(
 Then(
   'the user should see users sorted in ascending order by {string}',
   async ({ sortUsersPage }, locator) => {
+    await sortUsersPage.table.waitForTableLoading();
+
     const values = await sortUsersPage.table.getColumnValues(locator);
+
     expect(isAscending(values)).toBeTruthy();
   },
 );

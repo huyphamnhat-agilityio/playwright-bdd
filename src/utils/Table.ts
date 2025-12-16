@@ -54,4 +54,8 @@ export class Table {
   async getRowCount(): Promise<number> {
     return await this.table.locator('tbody tr').count();
   }
+
+  async waitForTableLoading() {
+    this.page.locator('.table-loading').waitFor({ state: 'hidden' });
+  }
 }
