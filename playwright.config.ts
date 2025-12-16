@@ -7,6 +7,9 @@ import path from 'path';
 const testDir = defineBddConfig({
   features: './src/features/**/*.feature',
   steps: ['./src/fixtures/**/*.ts', './src/steps/**/*.steps.ts'],
+  aiFix: {
+    promptAttachment: true,
+  },
 });
 
 /**
