@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page } from '@playwright/test';
 
 export class Table {
   private table: Locator;
@@ -7,19 +7,19 @@ export class Table {
     private page: Page,
     private rootSelector: string,
   ) {
-    this.table = page.locator(rootSelector);
+    this.table = this.page.locator(this.rootSelector);
   }
 
   /**
    * Returns all table rows (excluding header)
    */
   async getRows(): Promise<string[][]> {
-    const rowLocator = this.table.locator("tbody tr");
+    const rowLocator = this.table.locator('tbody tr');
     const rowCount = await rowLocator.count();
     const rows: string[][] = [];
 
     for (let i = 0; i < rowCount; i++) {
-      const cells = rowLocator.nth(i).locator("td");
+      const cells = rowLocator.nth(i).locator('td');
       rows.push(await cells.allTextContents());
     }
 
@@ -41,7 +41,7 @@ export class Table {
    */
   async clickHeader(headerName: string): Promise<void> {
     await this.table
-      .getByRole("columnheader", {
+      .getByRole('columnheader', {
         name: headerName,
         exact: true,
       })
@@ -52,6 +52,6 @@ export class Table {
    * Returns number of data rows
    */
   async getRowCount(): Promise<number> {
-    return await this.table.locator("tbody tr").count();
+    return await this.table.locator('tbody tr').count();
   }
 }

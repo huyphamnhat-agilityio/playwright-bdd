@@ -1,8 +1,8 @@
-import { Page, Locator } from "@playwright/test";
-import { BasePage } from "./BasePage";
-import { Table } from "@/utils";
-import { API_ENDPOINTS } from "@/constants";
-import { User } from "@/types";
+import { Page, Locator } from '@playwright/test';
+import { BasePage } from './BasePage';
+import { Table } from '@/utils';
+import { API_ENDPOINTS } from '@/constants';
+import { User } from '@/types';
 
 export class UsersPage extends BasePage {
   readonly newRecordButton: Locator;
@@ -22,28 +22,28 @@ export class UsersPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.newRecordButton = page
-      .getByRole("button", { name: "New Record" })
+      .getByRole('button', { name: 'New Record' })
       .first();
-    this.emailField = page.getByRole("textbox", { name: " email *" });
-    this.passwordField = page.getByRole("textbox", { name: " Password *" });
-    this.passwordConfirmField = page.getByRole("textbox", {
-      name: " Password confirm *",
+    this.emailField = page.getByRole('textbox', { name: ' email *' });
+    this.passwordField = page.getByRole('textbox', { name: ' Password *' });
+    this.passwordConfirmField = page.getByRole('textbox', {
+      name: ' Password confirm *',
     });
-    this.createButton = page.getByRole("button", { name: "Create" });
-    this.saveChangesButton = page.getByRole("button", { name: "Save changes" });
+    this.createButton = page.getByRole('button', { name: 'Create' });
+    this.saveChangesButton = page.getByRole('button', { name: 'Save changes' });
     this.headerCheckbox = page.locator(`label[for="checkbox_0"]`);
-    this.deleteButton = page.getByRole("button", { name: "Delete selected" });
-    this.confirmDeleteButton = page.getByRole("button", { name: "Yes" });
-    this.cancelButton = page.getByRole("button", { name: "Cancel" });
+    this.deleteButton = page.getByRole('button', { name: 'Delete selected' });
+    this.confirmDeleteButton = page.getByRole('button', { name: 'Yes' });
+    this.cancelButton = page.getByRole('button', { name: 'Cancel' });
     this.searchInput = page
-      .getByRole("textbox")
-      .filter({ hasText: "Search term or filter like" });
-    this.searchButton = page.getByRole("button", { name: "Search" });
-    this.table = new Table(page, "table");
+      .getByRole('textbox')
+      .filter({ hasText: 'Search term or filter like' });
+    this.searchButton = page.getByRole('button', { name: 'Search' });
+    this.table = new Table(page, 'table');
   }
 
   async navigateTo() {
-    await this.page.goto("");
+    await this.page.goto('');
   }
 
   async createUser(email: string, password: string, passwordConfirm: string) {
@@ -85,7 +85,7 @@ export class UsersPage extends BasePage {
 
   async verifySuccessMessage(message: string) {
     const successMessage = this.page.getByText(message);
-    await successMessage.waitFor({ state: "visible", timeout: 30000 });
+    await successMessage.waitFor({ state: 'visible', timeout: 30000 });
     return successMessage;
   }
 
@@ -99,7 +99,7 @@ export class UsersPage extends BasePage {
       this.page.waitForResponse(
         (response) =>
           response.url().includes(API_ENDPOINTS.COLLECTIONS) &&
-          response.request().method() === "POST",
+          response.request().method() === 'POST',
         { timeout: 30000 },
       ),
       this.createButton.click(),
@@ -117,12 +117,12 @@ export class UsersPage extends BasePage {
   }
 
   async clickChangePasswordCheckbox() {
-    const changePasswordCheckbox = this.page.getByText("Change password");
+    const changePasswordCheckbox = this.page.getByText('Change password');
     await changePasswordCheckbox.click();
   }
 
   async waitForApiResponse(
-    method: "GET" | "POST" | "PATCH" | "DELETE",
+    method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
     action: () => Promise<void>,
     endpoint: string = API_ENDPOINTS.COLLECTIONS,
   ) {
@@ -139,7 +139,7 @@ export class UsersPage extends BasePage {
   }
 
   async clickTableHeader(headerName: string) {
-    const header = this.page.getByRole("columnheader", {
+    const header = this.page.getByRole('columnheader', {
       name: headerName,
       exact: true,
     });
@@ -148,7 +148,7 @@ export class UsersPage extends BasePage {
 
   async getTableHeaderLocatorWithFilterStatus(
     name: string,
-    filter: "asc" | "desc",
+    filter: 'asc' | 'desc',
   ) {
     return this.page.locator(`th.col-field-${name}.sort-${filter}`);
   }

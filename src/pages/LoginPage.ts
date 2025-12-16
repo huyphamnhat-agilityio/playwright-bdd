@@ -1,5 +1,5 @@
-import { Page, Locator } from "@playwright/test";
-import { BasePage } from "@/pages/BasePage";
+import { Page, Locator } from '@playwright/test';
+import { BasePage } from '@/pages/BasePage';
 
 export class LoginPage extends BasePage {
   readonly emailField: Locator;
@@ -8,13 +8,13 @@ export class LoginPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.emailField = page.getByRole("textbox", { name: "Email *" });
-    this.passwordField = page.getByRole("textbox", { name: "Password *" });
-    this.loginButton = page.getByRole("button", { name: "Login " });
+    this.emailField = page.getByRole('textbox', { name: 'Email *' });
+    this.passwordField = page.getByRole('textbox', { name: 'Password *' });
+    this.loginButton = page.getByRole('button', { name: 'Login ' });
   }
 
   async navigateTo() {
-    await this.page.goto("#/login");
+    await this.page.goto('#/login');
   }
 
   async login(email: string, password: string) {

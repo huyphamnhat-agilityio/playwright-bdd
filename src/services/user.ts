@@ -1,6 +1,6 @@
-import { User, UserCreatePayload } from "@/types";
-import { createAuthenticatedRequest } from "./apiContext";
-import { API_ENDPOINTS } from "@/constants";
+import { User, UserCreatePayload } from '@/types';
+import { createAuthenticatedRequest } from './apiContext';
+import { API_ENDPOINTS } from '@/constants';
 export const createUser = async (payload: UserCreatePayload) => {
   const request = await createAuthenticatedRequest();
 

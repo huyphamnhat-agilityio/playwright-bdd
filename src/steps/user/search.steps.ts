@@ -1,11 +1,11 @@
-import { Given, When, Then } from "@/fixtures/users.fixture";
-import { expect } from "@playwright/test";
-import { ApiResponse } from "@/types";
+import { Given, When, Then } from '@/fixtures/users.fixture';
+import { expect } from '@playwright/test';
+import { ApiResponse } from '@/types';
 
 /**
  * Navigate to search page
  */
-Given("the user is on the users search page", async ({ searchUsersPage }) => {
+Given('the user is on the users search page', async ({ searchUsersPage }) => {
   await searchUsersPage.navigateTo();
 });
 
@@ -13,7 +13,7 @@ Given("the user is on the users search page", async ({ searchUsersPage }) => {
  * Fill search input
  */
 When(
-  "the user enters {string} into the search input",
+  'the user enters {string} into the search input',
   async (
     { searchUsersPage, browserName, $workerInfo: { workerIndex } },
     keyword,
@@ -27,9 +27,9 @@ When(
 /**
  * Click search button + wait for API
  */
-When("the user clicks the search button", async ({ searchUsersPage, ctx }) => {
+When('the user clicks the search button', async ({ searchUsersPage, ctx }) => {
   const response = await searchUsersPage.waitForApiResponse(
-    "GET",
+    'GET',
     async () => await searchUsersPage.searchButton.click(),
   );
 
@@ -41,7 +41,7 @@ When("the user clicks the search button", async ({ searchUsersPage, ctx }) => {
  * Validate UI + API results
  */
 Then(
-  "the user should see search results matching {string} in the {string} column",
+  'the user should see search results matching {string} in the {string} column',
   async (
     { searchUsersPage, browserName, ctx, $workerInfo: { workerIndex } },
     keyword,

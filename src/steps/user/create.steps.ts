@@ -1,18 +1,18 @@
-import { expect } from "@playwright/test";
+import { expect } from '@playwright/test';
 
 import {
   USER_CREATION_TEST_DATA,
   SUCCESS_MESSAGES,
   ERROR_MESSAGES,
-} from "@/constants";
-import { ApiErrorResponse } from "@/types";
-import { After, Given, Then, When } from "@/fixtures/users.fixture";
-import { deleteUser } from "@/services";
+} from '@/constants';
+import { ApiErrorResponse } from '@/types';
+import { After, Given, Then, When } from '@/fixtures/users.fixture';
+import { deleteUser } from '@/services';
 
 /**
  * Navigation
  */
-Given("the user is on the Users page", async ({ usersPage }) => {
+Given('the user is on the Users page', async ({ usersPage }) => {
   await usersPage.navigateTo();
 });
 
@@ -27,7 +27,7 @@ When('the user clicks the "New Record" button', async ({ usersPage }) => {
  * Fill fields using test constants
  */
 When(
-  "the user fills the email field with valid data",
+  'the user fills the email field with valid data',
   async ({ usersPage, browserName }) => {
     const email = `${USER_CREATION_TEST_DATA.email}${browserName}`;
     await usersPage.emailField.fill(email);
@@ -36,7 +36,7 @@ When(
 );
 
 When(
-  "the user fills the password field with valid data",
+  'the user fills the password field with valid data',
   async ({ usersPage }) => {
     await usersPage.passwordField.fill(USER_CREATION_TEST_DATA.password);
     await expect(usersPage.passwordField).toHaveValue(
@@ -46,7 +46,7 @@ When(
 );
 
 When(
-  "the user fills the password confirm field with valid data",
+  'the user fills the password confirm field with valid data',
   async ({ usersPage }) => {
     await usersPage.passwordConfirmField.fill(
       USER_CREATION_TEST_DATA.passwordConfirm,
@@ -58,11 +58,11 @@ When(
 );
 
 When(
-  "the user fills the confirm password field with {string}",
+  'the user fills the confirm password field with {string}',
   async ({ usersPage }, passwordConfirm) => {
-    await usersPage.passwordConfirmField.fill(passwordConfirm ?? "");
+    await usersPage.passwordConfirmField.fill(passwordConfirm ?? '');
     await expect(usersPage.passwordConfirmField).toHaveValue(
-      passwordConfirm ?? "",
+      passwordConfirm ?? '',
     );
   },
 );
@@ -70,7 +70,7 @@ When(
 When(
   'the user clicks the "Create" button to submit the form',
   async ({ usersPage, browserName, ctx }) => {
-    const response = await usersPage.waitForApiResponse("POST", () =>
+    const response = await usersPage.waitForApiResponse('POST', () =>
       usersPage.createButton.click(),
     );
 
@@ -89,7 +89,7 @@ When('the user clicks the "Create" button', async ({ usersPage }) => {
 });
 
 Then(
-  "the user should see the created user in the list",
+  'the user should see the created user in the list',
   async ({ usersPage, ctx: { createdUser } }) => {
     await usersPage.verifySuccessMessage(SUCCESS_MESSAGES.CREATE_SUCCESS);
 
@@ -100,14 +100,14 @@ Then(
 );
 
 Then(
-  "the API should return success for user creation",
+  'the API should return success for user creation',
   async ({ ctx: { createdUser } }) => {
     expect(createdUser).not.toBeNull();
   },
 );
 
 Then(
-  "the UI result should match the API response",
+  'the UI result should match the API response',
   async ({ usersPage, ctx }) => {
     const userInList = await usersPage.getUserByEmail(ctx.createdUser!.email);
     await expect(userInList).toContainText(ctx.createdUser!.email);
@@ -115,7 +115,7 @@ Then(
 );
 
 Then(
-  "the user should still see the Create User form",
+  'the user should still see the Create User form',
   async ({ usersPage }) => {
     await expect(usersPage.createButton).toBeVisible();
   },
@@ -125,7 +125,7 @@ Then(
   'the user clicks the "Create" button and receives an API error',
   async ({ usersPage }) => {
     const response = await usersPage.waitForApiResponse(
-      "POST",
+      'POST',
       async () => await usersPage.createButton.click(),
     );
 
@@ -137,14 +137,14 @@ Then(
 );
 
 Then(
-  "the user should see the input error message {string}",
+  'the user should see the input error message {string}',
   async ({ page }, expectedError) => {
     const inputError = page.getByText(expectedError);
     expect(await inputError.textContent()).toContain(expectedError);
   },
 );
 
-Then("the user should see an error toast message", async ({ page }) => {
+Then('the user should see an error toast message', async ({ page }) => {
   const errorMessage = page.getByText(ERROR_MESSAGES.CREATE_FAIL);
   await expect(errorMessage).toBeVisible({ timeout: 5000 });
 });
@@ -153,7 +153,7 @@ Then("the user should see an error toast message", async ({ page }) => {
  * Cleanup after create user scenarios
  */
 After(
-  { tags: "@TC_USERS_001 or @TC_USERS_002 or @TC_USERS_003" },
+  { tags: '@TC_USERS_001 or @TC_USERS_002 or @TC_USERS_003' },
   async ({ ctx }) => {
     if (ctx.createdUser?.id) {
       await deleteUser(ctx.createdUser.id);

@@ -1,6 +1,6 @@
-import { DashboardPage } from "@/pages/DashboardPage";
-import { LoginPage } from "@/pages/LoginPage";
-import { test as base, createBdd } from "playwright-bdd";
+import { DashboardPage } from '@/pages/DashboardPage';
+import { LoginPage } from '@/pages/LoginPage';
+import { test as base, createBdd } from 'playwright-bdd';
 
 type AuthFixtures = {
   loginPage: LoginPage;

@@ -1,14 +1,14 @@
-import { Given, Then, When } from "@/fixtures/users.fixture";
-import { expect } from "@playwright/test";
+import { Given, Then, When } from '@/fixtures/users.fixture';
+import { expect } from '@playwright/test';
 
 /**
  * Navigate to delete users page
  */
-Given("the user is on the delete users page", async ({ deleteUsersPage }) => {
+Given('the user is on the delete users page', async ({ deleteUsersPage }) => {
   await deleteUsersPage.navigateTo();
 });
 
-When("the user selects a user to delete", async ({ deleteUsersPage, ctx }) => {
+When('the user selects a user to delete', async ({ deleteUsersPage, ctx }) => {
   ctx.selectedUser = deleteUsersPage.userList[0];
 
   const checkbox = deleteUsersPage.getUserDeleteCheckbox(ctx.selectedUser.id);
@@ -17,11 +17,11 @@ When("the user selects a user to delete", async ({ deleteUsersPage, ctx }) => {
 });
 
 When(
-  "the user selects multiple users to delete",
+  'the user selects multiple users to delete',
   async ({ deleteUsersPage }) => {
     for (const user of deleteUsersPage.userList) {
       const checkbox = deleteUsersPage.getUserDeleteCheckbox(user.id);
-      await checkbox.waitFor({ state: "visible", timeout: 5000 });
+      await checkbox.waitFor({ state: 'visible', timeout: 5000 });
       await checkbox.click();
     }
   },
@@ -40,9 +40,9 @@ When(
 /**
  * Confirm deletion and verify API
  */
-When("the user confirms the deletion", async ({ deleteUsersPage }) => {
+When('the user confirms the deletion', async ({ deleteUsersPage }) => {
   const response = await deleteUsersPage.waitForApiResponse(
-    "DELETE",
+    'DELETE',
     async () => await deleteUsersPage.confirmDeleteButton.click(),
   );
 
@@ -53,7 +53,7 @@ When("the user confirms the deletion", async ({ deleteUsersPage }) => {
  * Verify user is removed from UI
  */
 Then(
-  "the deleted user should no longer appear in the user list",
+  'the deleted user should no longer appear in the user list',
   async ({ deleteUsersPage, ctx }) => {
     const userElement = await deleteUsersPage.getUserByEmail(
       ctx.selectedUser!.email,
@@ -64,7 +64,7 @@ Then(
 );
 
 Then(
-  "the deleted users should no longer appear in the user list",
+  'the deleted users should no longer appear in the user list',
   async ({ deleteUsersPage }) => {
     for (const selectedUser of deleteUsersPage.userList) {
       const userElement = await deleteUsersPage.getUserByEmail(
