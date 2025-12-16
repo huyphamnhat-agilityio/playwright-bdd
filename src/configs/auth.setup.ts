@@ -1,6 +1,6 @@
 import { AUTH_FILE } from '@/configs';
 import { CREDENTIALS, UI_ELEMENTS } from '@/constants';
-import { LoginPage } from '@/pages/LoginPage';
+import { LoginPage } from '@/pages/login';
 import { test as setup, expect } from '@playwright/test';
 
 setup('authenticate', async ({ page }) => {

@@ -1,5 +1,5 @@
 import { Page, Locator } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { BasePage } from './base';
 import { Table } from '@/utils';
 import { API_ENDPOINTS } from '@/constants';
 import { User } from '@/types';

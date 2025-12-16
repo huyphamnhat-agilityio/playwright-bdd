@@ -1,5 +1,5 @@
-import { DashboardPage } from '@/pages/DashboardPage';
-import { LoginPage } from '@/pages/LoginPage';
+import { DashboardPage } from '@/pages/dashboard';
+import { LoginPage } from '@/pages/login';
 import { test as base, createBdd } from 'playwright-bdd';
 
 type AuthFixtures = {
