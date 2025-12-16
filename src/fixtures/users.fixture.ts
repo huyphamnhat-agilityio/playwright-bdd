@@ -1,4 +1,4 @@
-import { UsersPage } from '@/pages/UsersPage';
+import { UsersPage } from '@/pages/users';
 import { testAuth } from './auth.fixture'; // <-- extend this fixture
 import { createBdd } from 'playwright-bdd';
 import { ApiResponse, User } from '@/types';

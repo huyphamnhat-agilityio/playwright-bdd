@@ -1,5 +1,5 @@
 import { User, UserCreatePayload } from '@/types';
-import { createAuthenticatedRequest } from './apiContext';
+import { createAuthenticatedRequest } from './api';
 import { API_ENDPOINTS } from '@/constants';
 export const createUser = async (payload: UserCreatePayload) => {
   const request = await createAuthenticatedRequest();
