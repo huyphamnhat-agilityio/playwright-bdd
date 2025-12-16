@@ -1,10 +1,14 @@
 # Playwright BDD Training
 
-A comprehensive end-to-end testing framework using Playwright with Behavior-Driven Development (BDD) approach. This project demonstrates modern testing practices with Gherkin feature files, TypeScript, and automated browser testing.
+A comprehensive end-to-end testing framework using Playwright with
+Behavior-Driven Development (BDD) approach. This project demonstrates modern
+testing practices with Gherkin feature files, TypeScript, and automated browser
+testing.
 
 ## Plan
 
-- Google Docs: [Playwright-bdd](https://docs.google.com/document/d/1SYEEO0x9Pdkzz30Ou-neryyJIE4y-yNaHneudV5qqBI/edit?usp=sharing)
+- Google Docs:
+  [Playwright-bdd](https://docs.google.com/document/d/1SYEEO0x9Pdkzz30Ou-neryyJIE4y-yNaHneudV5qqBI/edit?usp=sharing)
 
 ## 🚀 Features
 
@@ -36,7 +40,8 @@ A comprehensive end-to-end testing framework using Playwright with Behavior-Driv
 ## 🛠️ Tech Stack
 
 - **Testing Framework**: [Playwright](https://playwright.dev/)
-- **BDD Framework**: [playwright-bdd](https://vitalets.github.io/playwright-bdd/)
+- **BDD Framework**:
+  [playwright-bdd](https://vitalets.github.io/playwright-bdd/)
 - **Language**: TypeScript
 - **Package Manager**: pnpm
 - **Code Quality**: ESLint, Prettier, Husky
@@ -62,6 +67,9 @@ pnpm install
 
 # Install Playwright browsers
 pnpm exec playwright install
+
+# Setup Authentication Browser State
+pnpm auth:setup
 
 # Copy environment file
 cp .env.example .env
@@ -93,8 +101,6 @@ pnpm playwright test --grep "@TC_USERS_001"
 # Run tests for specific browser
 pnpm playwright test --project=chromium
 
-# Run authentication setup only
-pnpm auth:setup
 ```
 
 ### Test Reports
@@ -165,12 +171,12 @@ Feature: User Creation
   Scenario: User can create a user with valid value
     Given the user is on the Users page
     When the user clicks the "New Record" button
-      And the user fills the email field with valid data
-      And the user fills the password field with valid data
-      And the user fills the password confirm field with valid data
-      And the user clicks the "Create" button to submit the form
+    And the user fills the email field with valid data
+    And the user fills the password field with valid data
+    And the user fills the password confirm field with valid data
+    And the user clicks the "Create" button to submit the form
     Then the API should return success for user creation
-      And the user should see the created user in the list
+    And the user should see the created user in the list
 ```
 
 ### Step Definitions
@@ -178,9 +184,9 @@ Feature: User Creation
 Implement step definitions in `src/steps/`:
 
 ```typescript
-import { Given, When, Then } from "@/fixtures/users.fixture";
+import { Given, When, Then } from '@/fixtures/users.fixture';
 
-Given("the user is on the Users page", async ({ usersPage }) => {
+Given('the user is on the Users page', async ({ usersPage }) => {
   await usersPage.navigateTo();
 });
 
@@ -199,7 +205,7 @@ export class UsersPage extends BasePage {
   readonly emailField = this.page.locator('[name="email"]');
 
   async navigateTo() {
-    await this.page.goto("/users");
+    await this.page.goto('/users');
   }
 }
 ```
