@@ -1,18 +1,18 @@
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "@/constants";
-import { Given, When, Then, After } from "@/fixtures/users.fixture";
-import { createUser, deleteUser } from "@/services";
-import { ApiErrorResponse, User } from "@/types";
-import { expect } from "@playwright/test";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/constants';
+import { Given, When, Then, After } from '@/fixtures/users.fixture';
+import { createUser, deleteUser } from '@/services';
+import { ApiErrorResponse, User } from '@/types';
+import { expect } from '@playwright/test';
 
 /**
  * Background: Create user before scenario
  */
-Given("a test user exists for editing", async ({ browserName, ctx }) => {
+Given('a test user exists for editing', async ({ browserName, ctx }) => {
   const timestamp = Date.now();
   const payload = {
     email: `testuseredit-${timestamp}@example.com${browserName}`,
-    password: "123456789",
-    passwordConfirm: "123456789",
+    password: '123456789',
+    passwordConfirm: '123456789',
   };
 
   ctx.createdUser = await createUser(payload);
@@ -20,13 +20,13 @@ Given("a test user exists for editing", async ({ browserName, ctx }) => {
 });
 
 Given(
-  "a test user exists for editing invalid cases",
+  'a test user exists for editing invalid cases',
   async ({ browserName, ctx }) => {
     const timestamp = Date.now();
     const payload = {
       email: `testuserinvalid-${timestamp}@example.com${browserName}`,
-      password: "123456789",
-      passwordConfirm: "123456789",
+      password: '123456789',
+      passwordConfirm: '123456789',
     };
     ctx.createdUser = await createUser(payload);
     expect(ctx.createdUser?.id).toBeDefined();
@@ -34,13 +34,13 @@ Given(
 );
 
 Given(
-  "a test user exists for editing wrong cases",
+  'a test user exists for editing wrong cases',
   async ({ browserName, ctx }) => {
     const timestamp = Date.now();
     const payload = {
       email: `testuserwrong-${timestamp}@example.com${browserName}`,
-      password: "123456789",
-      passwordConfirm: "123456789",
+      password: '123456789',
+      passwordConfirm: '123456789',
     };
     ctx.createdUser = await createUser(payload);
     expect(ctx.createdUser?.id).toBeDefined();
@@ -50,14 +50,14 @@ Given(
 /**
  * Always navigate to the users page before scenario logic
  */
-Given("the user is on the users page", async ({ usersPage, ctx }) => {
+Given('the user is on the users page', async ({ usersPage, ctx }) => {
   await usersPage.navigateTo();
   const row = await usersPage.getUserByEmail(ctx.createdUser!.email);
   await expect(row).toBeVisible();
 });
 
 When(
-  "the user clicks the created user for editing",
+  'the user clicks the created user for editing',
   async ({ usersPage, ctx }) => {
     await usersPage.editUserByEmail(ctx.createdUser!.email);
   },
@@ -66,9 +66,9 @@ When(
 /**
  * Form appears
  */
-Then("the edit form should be displayed", async ({ page }) => {
-  const formHeading = page.getByRole("heading", {
-    name: "Edit users record",
+Then('the edit form should be displayed', async ({ page }) => {
+  const formHeading = page.getByRole('heading', {
+    name: 'Edit users record',
   });
   await expect(formHeading).toBeVisible();
 });
@@ -77,7 +77,7 @@ Then("the edit form should be displayed", async ({ page }) => {
  * Update email
  */
 When(
-  "the user updates the email to {string}",
+  'the user updates the email to {string}',
   async ({ usersPage }, newEmail) => {
     await usersPage.emailField.click();
     await usersPage.emailField.fill(newEmail);
@@ -88,7 +88,7 @@ When(
 /**
  * Check change password
  */
-When("the user enables password editing", async ({ usersPage }) => {
+When('the user enables password editing', async ({ usersPage }) => {
   await usersPage.clickChangePasswordCheckbox();
 });
 
@@ -96,7 +96,7 @@ When("the user enables password editing", async ({ usersPage }) => {
  * Update password
  */
 When(
-  "the user updates the password to {string}",
+  'the user updates the password to {string}',
   async ({ usersPage }, newPassword) => {
     await usersPage.passwordField.click();
     await usersPage.passwordField.fill(newPassword);
@@ -105,7 +105,7 @@ When(
 );
 
 When(
-  "the user updates the password confirm to {string}",
+  'the user updates the password confirm to {string}',
   async ({ usersPage }, newPasswordConfirm) => {
     await usersPage.passwordConfirmField.click();
     await usersPage.passwordConfirmField.fill(newPasswordConfirm);
@@ -122,7 +122,7 @@ When(
   'the user clicks the "Save changes" button and receives a valid API response',
   async ({ usersPage, ctx }) => {
     const response = await usersPage.waitForApiResponse(
-      "PATCH",
+      'PATCH',
       async () => await usersPage.saveChangesButton.click(),
     );
 
@@ -139,7 +139,7 @@ When(
   'the user clicks the "Save changes" button and receives an error response',
   async ({ usersPage }) => {
     const response = await usersPage.waitForApiResponse(
-      "PATCH",
+      'PATCH',
       async () => await usersPage.saveChangesButton.click(),
     );
 
@@ -161,7 +161,7 @@ When(
  * Verify list + toast
  */
 Then(
-  "the user should see the updated user in the list",
+  'the user should see the updated user in the list',
   async ({ usersPage, ctx }) => {
     await usersPage.verifySuccessMessage(SUCCESS_MESSAGES.UPDATE_SUCCESS);
 
@@ -171,7 +171,7 @@ Then(
   },
 );
 
-Then("the user should see an update failure message", async ({ page }) => {
+Then('the user should see an update failure message', async ({ page }) => {
   const toast = page.getByText(ERROR_MESSAGES.UPDATE_FAIL);
   await expect(toast).toBeVisible();
 });
@@ -180,24 +180,24 @@ Then("the user should see an update failure message", async ({ page }) => {
  * Validate API + UI consistency
  */
 Then(
-  "the updated UI result should match the API response",
+  'the updated UI result should match the API response',
   async ({ usersPage, ctx }) => {
     const userInList = await usersPage.getUserByEmail(ctx.createdUser!.email);
     await expect(userInList).toContainText(ctx.createdUser!.email);
   },
 );
 
-Then("the form should not be submitted", async ({ usersPage }) => {
+Then('the form should not be submitted', async ({ usersPage }) => {
   await expect(usersPage.saveChangesButton).toBeVisible();
   await usersPage.cancelButton.click();
 });
 
-Then("the user should stay on the edit form", async ({ usersPage }) => {
+Then('the user should stay on the edit form', async ({ usersPage }) => {
   await expect(usersPage.saveChangesButton).toBeVisible();
 });
 
 Then(
-  "the user should see the input error {string}",
+  'the user should see the input error {string}',
   async ({ page }, expectedError) => {
     const inputError = page.getByText(expectedError);
     await expect(inputError).toBeVisible();
@@ -209,7 +209,7 @@ Then(
  * Cleanup after edit user scenarios
  */
 After(
-  { tags: "@TC_USERS_004 or @TC_USERS_005 or @TC_USERS_006" },
+  { tags: '@TC_USERS_004 or @TC_USERS_005 or @TC_USERS_006' },
   async ({ ctx }) => {
     if (ctx.createdUser?.id) {
       await deleteUser(ctx.createdUser.id);

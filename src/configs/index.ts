@@ -1,1 +1,1 @@
-export * from "./browsers";
+export * from './browsers';

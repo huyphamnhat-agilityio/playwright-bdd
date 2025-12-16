@@ -1,17 +1,17 @@
-import { UsersPage } from "@/pages/UsersPage";
-import { testAuth } from "./auth.fixture"; // <-- extend this fixture
-import { createBdd } from "playwright-bdd";
-import { ApiResponse, User } from "@/types";
+import { UsersPage } from '@/pages/UsersPage';
+import { testAuth } from './auth.fixture'; // <-- extend this fixture
+import { createBdd } from 'playwright-bdd';
+import { ApiResponse, User } from '@/types';
 import {
   USER_DELETE_TEST_DATA,
   USER_SEARCH_TEST_DATA,
   USER_SORT_TEST_DATA,
-} from "@/constants";
-import { createUser, deleteUser } from "@/services";
+} from '@/constants';
+import { createUser, deleteUser } from '@/services';
 
 type Ctx = {
   createdUser: User | null;
-  selectedUser?: Pick<User, "email" | "id">;
+  selectedUser?: Pick<User, 'email' | 'id'>;
   searchApiResponse?: ApiResponse<{ id: string }>;
 };
 
@@ -67,12 +67,7 @@ export const testUser = testAuth.extend<UsersFixtures>({
 
     // Cleanup any remaining users after test
     for (const { id } of userList) {
-      try {
-        await deleteUser(id);
-      } catch (error) {
-        // User might already be deleted by the test
-        console.warn(`Failed to cleanup user ${id}:`, error);
-      }
+      await deleteUser(id);
     }
   },
 

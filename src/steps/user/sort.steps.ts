@@ -1,11 +1,11 @@
-import { Given, When, Then } from "@/fixtures/users.fixture";
-import { isAscending, isDescending } from "@/utils";
-import { expect } from "@playwright/test";
+import { Given, When, Then } from '@/fixtures/users.fixture';
+import { isAscending, isDescending } from '@/utils';
+import { expect } from '@playwright/test';
 
 /**
  * Navigate to users list page
  */
-Given("the user is on the users list page", async ({ sortUsersPage }) => {
+Given('the user is on the users list page', async ({ sortUsersPage }) => {
   await sortUsersPage.waitForPageLoad();
 });
 
@@ -13,10 +13,10 @@ Given("the user is on the users list page", async ({ sortUsersPage }) => {
  * Sort descending
  */
 When(
-  "the user clicks the {string} column header to sort in descending order",
+  'the user clicks the {string} column header to sort in descending order',
   async ({ sortUsersPage }, field) => {
     const response = await sortUsersPage.waitForApiResponse(
-      "GET",
+      'GET',
       async () => await sortUsersPage.table.clickHeader(field),
     );
 
@@ -28,7 +28,7 @@ When(
  * Verify descending order
  */
 Then(
-  "the user should see users sorted in descending order by {string}",
+  'the user should see users sorted in descending order by {string}',
   async ({ sortUsersPage }, locator) => {
     const values = await sortUsersPage.table.getColumnValues(locator);
 
@@ -40,10 +40,10 @@ Then(
  * Sort ascending
  */
 When(
-  "the user clicks the {string} column header to sort in ascending order",
+  'the user clicks the {string} column header to sort in ascending order',
   async ({ sortUsersPage }, field) => {
     const response = await sortUsersPage.waitForApiResponse(
-      "GET",
+      'GET',
       async () => await sortUsersPage.table.clickHeader(field),
     );
 
@@ -55,7 +55,7 @@ When(
  * Verify ascending order
  */
 Then(
-  "the user should see users sorted in ascending order by {string}",
+  'the user should see users sorted in ascending order by {string}',
   async ({ sortUsersPage }, locator) => {
     const values = await sortUsersPage.table.getColumnValues(locator);
     expect(isAscending(values)).toBeTruthy();
