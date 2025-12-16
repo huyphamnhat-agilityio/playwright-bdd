@@ -5,8 +5,7 @@ Feature: Authentication
   @login
   Scenario: User can login with right username and password
     Given the user is on the login page
-    When the user fills the email field with "test@example.com"
-    And the user fills the password field with "123456"
+    When the user fills the email field with "test@example.com" and the password field with "123456"
     And the user clicks the login button
     Then the user should navigate to the dashboard page
 
@@ -14,8 +13,7 @@ Feature: Authentication
   @login
   Scenario Outline: User cannot submit login form with invalid credentials
     Given the user is on the login page
-    When the user fills the email field with "<email>"
-    And the user fills the password field with "<password>"
+    When the user fills the email field with "<email>" and the password field with "<password>"
     And the user clicks the login button
     Then the user should stay on the login page
 
@@ -29,8 +27,7 @@ Feature: Authentication
   @login
   Scenario: User cannot login with wrong username and password
     Given the user is on the login page
-    When the user fills the email field with "wrongemail@example.com"
-    And the user fills the password field with "wrongpassword"
+    When the user fills the email field with "wrongemail@example.com" and the password field with "wrongpassword"
     And the user clicks the login button
     Then the user should see invalid credentials error
 

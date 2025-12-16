@@ -11,8 +11,7 @@ Feature: User Edition
     Then the edit form should be displayed
     When the user updates the email to "<newEmail>"
     And the user enables password editing
-    And the user updates the password to "<newPassword>"
-    And the user updates the password confirm to "<newPasswordConfirm>"
+    And the user updates the password to "<newPassword>" and the password confirm to "<newPasswordConfirm>"
     And the user clicks the "Save changes" button and receives a valid API response
     Then the user should see the updated user in the list
     And the updated UI result should match the API response
@@ -32,8 +31,7 @@ Feature: User Edition
 
     When the user updates the email to "<newEmail>"
     And the user enables password editing
-    And the user updates the password to "<newPassword>"
-    And the user updates the password confirm to "<newPasswordConfirm>"
+    And the user updates the password to "<newPassword>" and the password confirm to "<newPasswordConfirm>"
     And the user clicks the "Save changes" button with invalid data
 
     Then the form should not be submitted
@@ -54,8 +52,7 @@ Feature: User Edition
     Then the edit form should be displayed
     When the user updates the email to "<newEmail>"
     And the user enables password editing
-    And the user updates the password to "<newPassword>"
-    And the user updates the password confirm to "<newPasswordConfirm>"
+    And the user updates the password to "<newPassword>" and the password confirm to "<newPasswordConfirm>"
     And the user clicks the "Save changes" button and receives an error response
     Then the user should see an update failure message
     And the user should see the input error "<expectedError>"

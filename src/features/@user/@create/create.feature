@@ -17,8 +17,7 @@ Feature: User Creation
   Scenario Outline: User cannot submit create user form with <description>
     Given the user is on the Users page
     When the user clicks the "New Record" button
-    And the user fills the email field with "<email>"
-    And the user fills the password field with "<password>"
+    And the user fills the email field with "<email>" and the password field with "<password>"
     And the user fills the confirm password field with "<passwordConfirm>"
     And the user clicks the "Create" button
     Then the user should still see the Create User form
@@ -33,8 +32,7 @@ Feature: User Creation
   Scenario Outline: The user cannot create a user with <description>
     Given the user is on the Users page
     When the user clicks the "New Record" button
-    And the user fills the email field with "<email>"
-    And the user fills the password field with "<password>"
+    And the user fills the email field with "<email>" and the password field with "<password>"
     And the user fills the confirm password field with "<passwordConfirm>"
     And the user clicks the "Create" button and receives an API error
     Then the user should see an error toast message
