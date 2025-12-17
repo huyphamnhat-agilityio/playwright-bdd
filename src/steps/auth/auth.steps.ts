@@ -28,7 +28,7 @@ When('the user clicks the login button', async ({ loginPage }) => {
 });
 
 Then('the user should navigate to the dashboard page', async ({ page }) => {
-  const dashboardLogo = page.getByRole('alert', {
+  const dashboardLogo = page.getByRole('link', {
     name: UI_ELEMENTS.POCKETBASE_LOGO,
   });
   await expect(dashboardLogo).toBeVisible();
